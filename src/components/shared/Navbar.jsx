@@ -8,10 +8,10 @@ const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
 
     const links = <>
-        <NavLink onClick={() => setShowMenu(!showMenu)}>HOME</NavLink>
+        <NavLink to="/" onClick={() => setShowMenu(!showMenu)}>HOME</NavLink>
         <NavLink onClick={() => setShowMenu(!showMenu)}>CONTACT US</NavLink>
         <NavLink onClick={() => setShowMenu(!showMenu)}>DASHBOARD</NavLink>
-        <NavLink onClick={() => setShowMenu(!showMenu)}>OUR MENU</NavLink>
+        <NavLink to="/menu" onClick={() => setShowMenu(!showMenu)}>OUR MENU</NavLink>
         <NavLink onClick={() => setShowMenu(!showMenu)}>OUR SHOP</NavLink>
     </>
 
