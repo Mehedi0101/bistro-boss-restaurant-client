@@ -7,16 +7,13 @@ import category1 from "../../assets/category/slide1.jpg";
 import category2 from "../../assets/category/slide2.jpg";
 import category3 from "../../assets/category/slide3.jpg";
 import category4 from "../../assets/category/slide4.jpg";
+import HeadingSection from '../shared/HeadingSection';
 
 
 const Category = () => {
     return (
-        <div className="max-w-screen-2xl mx-auto mt-20 px-5 md:px-10">
-            <div className="text-center">
-                <h4 className="text-base text-[#D99904] italic mb-2">---From 11:00am to 10:00pm---</h4>
-                <h2 className="border-t-2 border-b-2 border-[#E8E8E8] w-fit mx-auto text-[#151515] text-3xl py-4">ORDER ONLINE</h2>
-            </div>
-
+        <div className="max-w-screen-2xl mx-auto md:mt-20 mt-10 px-5 md:px-10">
+            <HeadingSection subHeading={"From 11:00am to 10:00pm"} heading={"ORDER ONLINE"}></HeadingSection>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={10}
