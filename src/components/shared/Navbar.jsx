@@ -18,7 +18,7 @@ const Navbar = () => {
     return (
         <>
             {/* larger device */}
-            <nav className="bg-[#15151580] text-white absolute w-full py-5 lg:block hidden">
+            <nav className="bg-[#15151580] text-white absolute w-full py-5 lg:block hidden z-10">
                 <div className="flex items-center justify-between px-10 max-w-screen-2xl mx-auto">
                     <div className="cinzel text-3xl font-black">
                         <div>BISTRO BOSS</div>
@@ -33,7 +33,7 @@ const Navbar = () => {
             </nav>
 
             {/* smaller device */}
-            <nav className="bg-[#15151580] text-white absolute w-full py-5 flex lg:hidden items-center justify-between md:px-10 px-5 gap-2">
+            <nav className="bg-[#15151580] text-white absolute w-full py-5 flex lg:hidden items-center justify-between md:px-10 px-5 gap-2 z-10">
                 <div className="flex gap-2 items-center">
                     <BiMenu onClick={() => setShowMenu(!showMenu)} className="text-2xl" />
                     <div className="cinzel sm:text-2xl text-lg font-black">
