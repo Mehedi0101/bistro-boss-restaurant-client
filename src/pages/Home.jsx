@@ -5,6 +5,7 @@ import PopularItems from "../components/home/PopularItems";
 import Recommendation from "../components/home/Recommendation";
 import Slider from "../components/home/Slider";
 import SpecialItem from "../components/home/SpecialItem";
+import Testimonial from "../components/home/Testimonial";
 
 const Home = () => {
     return (
@@ -16,6 +17,7 @@ const Home = () => {
             <CallUs></CallUs>
             <Recommendation></Recommendation>
             <SpecialItem></SpecialItem>
+            <Testimonial></Testimonial>
         </>
     );
 };
