@@ -2,7 +2,7 @@ import featuredImage from "../../assets/feature/featured.jpg";
 
 const SpecialItem = () => {
     return (
-        <div className="hero min-h-screen md:mt-20 mt-10" style={{ backgroundImage: `url(${featuredImage})` }}>
+        <div className="hero min-h-screen md:mt-20 mt-10 bg-fixed" style={{ backgroundImage: `url(${featuredImage})` }}>
             <div className="hero-overlay bg-[#151515] bg-opacity-60"></div>
             <div className="hero-content text-center text-neutral-content md:px-10 py-20 px-5">
                 <div className="max-w-screen-2xl">
