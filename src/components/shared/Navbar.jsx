@@ -12,7 +12,7 @@ const Navbar = () => {
         <NavLink onClick={() => setShowMenu(!showMenu)}>CONTACT US</NavLink>
         <NavLink onClick={() => setShowMenu(!showMenu)}>DASHBOARD</NavLink>
         <NavLink to="/menu" onClick={() => setShowMenu(!showMenu)}>OUR MENU</NavLink>
-        <NavLink onClick={() => setShowMenu(!showMenu)}>OUR SHOP</NavLink>
+        <NavLink to="/order" onClick={() => setShowMenu(!showMenu)}>ORDER FOOD</NavLink>
     </>
 
     return (
