@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { GiShoppingCart } from "react-icons/gi";
 import { BiMenu } from "react-icons/bi";
 import "./styles/navbar.css";
@@ -27,7 +27,7 @@ const Navbar = () => {
                     <div className="flex items-center base gap-5 font-extrabold">
                         {links}
                         <div id="hamburger" className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
-                        <button>SIGN IN</button>
+                        <Link to="/login"><button>SIGN IN</button></Link>
                     </div>
                 </div>
             </nav>
@@ -43,7 +43,7 @@ const Navbar = () => {
                 </div>
                 <div className="flex items-center gap-2 sm:text-sm text-xs font-extrabold">
                     <div className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
-                    <button>SIGN IN</button>
+                    <Link to="/login"><button>SIGN IN</button></Link>
                 </div>
                 <div id="dropdown-menu" className={`absolute sm:text-sm text-xs font-extrabold gap-5 flex-col sm:top-[100px] top-[88px] bg-[#0f0f0fad] p-8 ${showMenu ? "flex" : "hidden"}`}>
                     {links}
