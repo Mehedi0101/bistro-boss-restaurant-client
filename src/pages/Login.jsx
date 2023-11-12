@@ -1,3 +1,4 @@
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { Link } from "react-router-dom";
 import authBg from "../assets/authentication/authentication.png";
 import authImg from "../assets/authentication/authentication2.png";
@@ -5,8 +6,37 @@ import FormField from "../components/authentication/FormField";
 import { BsFacebook } from "react-icons/bs";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { BsGithub } from "react-icons/bs";
+import { MdOutlineDangerous } from "react-icons/md";
+import { useEffect, useState } from 'react';
 
 const Login = () => {
+
+    const [captchaMatched, setCaptchaMatched] = useState(false);
+
+    useEffect(() => {
+        loadCaptchaEnginge(6);
+    }, [])
+
+    const handleSignIn = e => {
+        e.preventDefault();
+
+        setCaptchaMatched(false);
+
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        const captcha = form.captcha.value;
+
+        if(validateCaptcha(captcha)){
+            setCaptchaMatched(false);
+        }
+        else{
+            setCaptchaMatched(true);
+        }
+    }
+
+
+
     return (
         <div className="min-h-screen lg:p-20" style={{ backgroundImage: `url(${authBg})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
             <div className="max-w-screen-2xl mx-auto shadow-xl border-2 border-[#0000001f] shadow-[#00000040] flex md:flex-row flex-col justify-center items-center">
@@ -16,9 +46,14 @@ const Login = () => {
 
                 <div className="md:w-1/2 w-full px-10 xl:px-20 py-10">
                     <h2 className="text-[#151515] lg:text-3xl text-2xl text-center font-bold mb-4">Login</h2>
-                    <form>
+                    <form onSubmit={handleSignIn}>
                         <FormField label="Email" type="email" name="email" placeholder="Type here" />
                         <FormField label="Password" type="password" name="password" placeholder="Enter your password" />
+                        < LoadCanvasTemplate reloadText="Reload" reloadColor="#D1A054" />
+                        <input className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg mb-5" type="text" name="captcha" id="captcha" placeholder="Type here" />
+                        {
+                            captchaMatched && <div className='text-red-600 flex items-center gap-1 mb-5 -mt-4'><MdOutlineDangerous className='text-2xl' />Try Again</div>
+                        }
                         <input className="w-full text-white font-bold bg-[#d1a054b3] px-5 py-3 rounded-lg mb-4" type="submit" value="Sign In" />
                     </form>
                     <div className="text-center text-sm text-[#D1A054] mb-4">
