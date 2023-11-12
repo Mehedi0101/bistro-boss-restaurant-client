@@ -7,9 +7,12 @@ import { BsFacebook } from "react-icons/bs";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { BsGithub } from "react-icons/bs";
 import { MdOutlineDangerous } from "react-icons/md";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../provider/AuthProvider';
 
 const Login = () => {
+
+    const { loginUser } = useContext(AuthContext);
 
     const [captchaMatched, setCaptchaMatched] = useState(false);
 
@@ -27,12 +30,21 @@ const Login = () => {
         const password = form.password.value;
         const captcha = form.captcha.value;
 
-        if(validateCaptcha(captcha)){
+        if (validateCaptcha(captcha)) {
             setCaptchaMatched(false);
         }
-        else{
-            setCaptchaMatched(true);
+        else {
+            return setCaptchaMatched(true);
         }
+
+        loginUser(email,password)
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
     }
 
 
