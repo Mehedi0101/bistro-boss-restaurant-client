@@ -7,11 +7,12 @@ import { BsGithub } from "react-icons/bs";
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { useForm } from "react-hook-form";
+import { Store } from "react-notifications-component";
 
 const Register = () => {
     const { createUser } = useContext(AuthContext);
 
-    
+
     const {
         register,
         handleSubmit,
@@ -20,33 +21,39 @@ const Register = () => {
 
 
     const onSubmit = (data) => {
-        console.log(data)
 
         createUser(data.email, data.password)
-        .then(res => {
-            console.log(res);
-        })
-        .catch( err => {
-            console.log(err);
-        })
+            .then(() => {
+                Store.addNotification({
+                    title: "Successful",
+                    message: "You have successfully signed up",
+                    type: "success",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
+            .catch(() => {
+                Store.addNotification({
+                    title: "Failed",
+                    message: "Sign up failed",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
     }
-
-    // const handleSignUp = e =>{
-    //     e.preventDefault();
-
-    //     const form = e.target;
-    //     const name = form.name.value;
-    //     const email = form.email.value;
-    //     const password = form.password.value;
-
-    //     createUser(email,password)
-    //     .then(res => {
-    //         console.log(res);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
-    // }
 
     return (
         <div className="min-h-screen lg:p-20" style={{ backgroundImage: `url(${authBg})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
@@ -58,9 +65,6 @@ const Register = () => {
                 <div className="md:w-1/2 w-full px-10 xl:px-20 py-10">
                     <h2 className="text-[#151515] lg:text-3xl text-2xl text-center font-bold mb-4">Sign Up</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        {/* <FormField label="Name" type="text" name="name" placeholder="Type here" />
-                        <FormField label="Email" type="email" name="email" placeholder="Type here" />
-                        <FormField label="Password" type="password" name="password" placeholder="Enter your password" /> */}
                         <div className="mb-5">
                             <label htmlFor="name" className="text-[#444] font-semibold ml-1">Name</label><br />
                             <input {...register("name", { required: true })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="text" name="name" id="name" placeholder="Type here" />
@@ -78,9 +82,11 @@ const Register = () => {
 
                         <div className="mb-5">
                             <label htmlFor="password" className="text-[#444] font-semibold ml-1">Password</label><br />
-                            <input {...register("password", { required: true, 
-                                minLength: 6, 
-                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-=_+{};:'",.<>?/|\\[\]`~]).{8,}$/ })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="password" name="password" id="password" placeholder="Enter your password" />
+                            <input {...register("password", {
+                                required: true,
+                                minLength: 6,
+                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-=_+{};:'",.<>?/|\\[\]`~]).{8,}$/
+                            })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="password" name="password" id="password" placeholder="Enter your password" />
                             <br />
                             {errors.password?.type === "required" && <span className="text-red-600 text-sm ml-2">* This field is required</span>}
                             {errors.password?.type === "minLength" && <span className="text-red-600 text-sm ml-2">* Password should contain at least 6 characters</span>}

@@ -2,10 +2,14 @@ import { Link, NavLink } from "react-router-dom";
 import { GiShoppingCart } from "react-icons/gi";
 import { BiMenu } from "react-icons/bi";
 import "./styles/navbar.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+import defaultUserImg from "../../assets/authentication/profile.png";
+import { Store } from "react-notifications-component";
 
 const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
+    const { currentUser, logoutUser } = useContext(AuthContext);
 
     const links = <>
         <NavLink to="/" onClick={() => setShowMenu(!showMenu)}>HOME</NavLink>
@@ -14,6 +18,40 @@ const Navbar = () => {
         <NavLink to="/menu" onClick={() => setShowMenu(!showMenu)}>OUR MENU</NavLink>
         <NavLink to="/order" onClick={() => setShowMenu(!showMenu)}>ORDER FOOD</NavLink>
     </>
+
+    const handleSignOut = () => {
+        logoutUser()
+            .then(() => {
+                Store.addNotification({
+                    title: "Successful",
+                    message: "You have successfully logged out",
+                    type: "success",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
+            .catch(() => {
+                Store.addNotification({
+                    title: "Failed",
+                    message: "Something went wrong",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
+    }
 
     return (
         <>
@@ -27,7 +65,16 @@ const Navbar = () => {
                     <div className="flex items-center base gap-5 font-extrabold">
                         {links}
                         <div id="hamburger" className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
-                        <Link to="/login"><button>SIGN IN</button></Link>
+                        {
+                            currentUser
+                                ?
+                                <div className="flex items-center gap-1">
+                                    <button onClick={handleSignOut}>SIGN OUT</button>
+                                    <img className="w-8 h-8 rounded-full object-cover" src={currentUser?.photoURL || defaultUserImg} alt="" />
+                                </div>
+                                :
+                                <Link to="/login"><button>SIGN IN</button></Link>
+                        }
                     </div>
                 </div>
             </nav>
@@ -43,7 +90,16 @@ const Navbar = () => {
                 </div>
                 <div className="flex items-center gap-2 sm:text-sm text-xs font-extrabold">
                     <div className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
-                    <Link to="/login"><button>SIGN IN</button></Link>
+                    {
+                        currentUser
+                            ?
+                            <div className="flex items-center gap-1">
+                                <button onClick={handleSignOut}>SIGN OUT</button>
+                                <img className="w-8 h-8 rounded-full object-cover" src={currentUser?.photoURL || defaultUserImg} alt="" />
+                            </div>
+                            :
+                            <Link to="/login"><button>SIGN IN</button></Link>
+                    }
                 </div>
                 <div id="dropdown-menu" className={`absolute sm:text-sm text-xs font-extrabold gap-5 flex-col sm:top-[100px] top-[88px] bg-[#0f0f0fad] p-8 ${showMenu ? "flex" : "hidden"}`}>
                     {links}

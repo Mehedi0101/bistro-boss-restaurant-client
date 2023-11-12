@@ -9,6 +9,7 @@ import { BsGithub } from "react-icons/bs";
 import { MdOutlineDangerous } from "react-icons/md";
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
+import { Store } from 'react-notifications-component';
 
 const Login = () => {
 
@@ -24,7 +25,6 @@ const Login = () => {
         e.preventDefault();
 
         setCaptchaMatched(false);
-
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
@@ -34,16 +34,53 @@ const Login = () => {
             setCaptchaMatched(false);
         }
         else {
+            Store.addNotification({
+                title: "Failed",
+                message: "Wrong captcha!",
+                type: "danger",
+                insert: "top",
+                container: "top-center",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    onScreen: true
+                }
+            });
             return setCaptchaMatched(true);
         }
 
-        loginUser(email,password)
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        loginUser(email, password)
+            .then(() => {
+                Store.addNotification({
+                    title: "Successful",
+                    message: "You have successfully signed in",
+                    type: "success",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
+            .catch(() => {
+                Store.addNotification({
+                    title: "Failed",
+                    message: "Sign in failed",
+                    type: "danger",
+                    insert: "top",
+                    container: "top-center",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        onScreen: true
+                    }
+                });
+            })
 
     }
 
@@ -66,7 +103,7 @@ const Login = () => {
                         {
                             captchaMatched && <div className='text-red-600 flex items-center gap-1 mb-5 -mt-4'><MdOutlineDangerous className='text-2xl' />Try Again</div>
                         }
-                        <input className="w-full text-white font-bold bg-[#d1a054b3] px-5 py-3 rounded-lg mb-4" type="submit" value="Sign In" />
+                        <input className="w-full text-white font-bold bg-[#d1a054b3] px-5 py-3 rounded-lg mb-4 cursor-pointer" type="submit" value="Sign In" />
                     </form>
                     <div className="text-center text-sm text-[#D1A054] mb-4">
                         <span className="font-medium">New here? </span>
