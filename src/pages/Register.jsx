@@ -11,14 +11,24 @@ import { useForm } from "react-hook-form";
 const Register = () => {
     const { createUser } = useContext(AuthContext);
 
+    
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm()
 
+
     const onSubmit = (data) => {
         console.log(data)
+
+        createUser(data.email, data.password)
+        .then(res => {
+            console.log(res);
+        })
+        .catch( err => {
+            console.log(err);
+        })
     }
 
     // const handleSignUp = e =>{
@@ -68,13 +78,17 @@ const Register = () => {
 
                         <div className="mb-5">
                             <label htmlFor="password" className="text-[#444] font-semibold ml-1">Password</label><br />
-                            <input {...register("password", { required: true })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="password" name="password" id="password" placeholder="Enter your password" />
+                            <input {...register("password", { required: true, 
+                                minLength: 6, 
+                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-=_+{};:'",.<>?/|\\[\]`~]).{8,}$/ })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="password" name="password" id="password" placeholder="Enter your password" />
                             <br />
-                            {errors.password && <span className="text-red-600 text-sm ml-2">* This field is required</span>}
+                            {errors.password?.type === "required" && <span className="text-red-600 text-sm ml-2">* This field is required</span>}
+                            {errors.password?.type === "minLength" && <span className="text-red-600 text-sm ml-2">* Password should contain at least 6 characters</span>}
+                            {errors.password?.type === "pattern" && <span className="text-red-600 text-sm ml-2">* Password should contain at least one uppercase, lowercase, number and special character</span>}
                         </div>
 
 
-                        <input className="w-full text-white font-bold bg-[#d1a054b3] px-5 py-3 rounded-lg mb-4" type="submit" value="Sign Up" />
+                        <input className="w-full text-white font-bold bg-[#d1a054b3] px-5 py-3 rounded-lg mb-4 cursor-pointer" type="submit" value="Sign Up" />
                     </form>
                     <div className="text-center text-sm text-[#D1A054] mb-4">
                         <span className="font-medium">Already registered? </span>
