@@ -64,7 +64,10 @@ const Navbar = () => {
                     </div>
                     <div className="flex items-center base gap-5 font-extrabold">
                         {links}
-                        <div id="hamburger" className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
+                        <div className="p-1 rounded-full bg-[#006837] relative">
+                            <GiShoppingCart className="text-2xl" />
+                            <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">3</div>
+                        </div>
                         {
                             currentUser
                                 ?
@@ -89,7 +92,10 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2 sm:text-sm text-xs font-extrabold">
-                    <div className="p-1 rounded-full bg-[#006837]"><GiShoppingCart className="text-2xl" /></div>
+                    <div className="p-1 rounded-full bg-[#006837] relative">
+                        <GiShoppingCart className="text-2xl" />
+                        <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">3</div>
+                    </div>
                     {
                         currentUser
                             ?
