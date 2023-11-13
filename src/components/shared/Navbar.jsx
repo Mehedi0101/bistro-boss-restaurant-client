@@ -15,8 +15,8 @@ const Navbar = () => {
 
     const links = <>
         <NavLink to="/" onClick={() => setShowMenu(!showMenu)}>HOME</NavLink>
-        <NavLink onClick={() => setShowMenu(!showMenu)}>CONTACT US</NavLink>
-        <NavLink onClick={() => setShowMenu(!showMenu)}>DASHBOARD</NavLink>
+        <NavLink to="/contact-us" onClick={() => setShowMenu(!showMenu)}>CONTACT US</NavLink>
+        <NavLink to="/dashboard" onClick={() => setShowMenu(!showMenu)}>DASHBOARD</NavLink>
         <NavLink to="/menu" onClick={() => setShowMenu(!showMenu)}>OUR MENU</NavLink>
         <NavLink to="/order" onClick={() => setShowMenu(!showMenu)}>ORDER FOOD</NavLink>
     </>
@@ -66,10 +66,12 @@ const Navbar = () => {
                     </div>
                     <div className="flex items-center base gap-5 font-extrabold">
                         {links}
-                        <div className="p-1 rounded-full bg-[#006837] relative">
-                            <GiShoppingCart className="text-2xl" />
-                            <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
-                        </div>
+                        <Link to='/dashboard/my-cart'>
+                            <div className="p-1 rounded-full bg-[#006837] relative cursor-pointer">
+                                <GiShoppingCart className="text-2xl" />
+                                <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
+                            </div>
+                        </Link>
                         {
                             currentUser
                                 ?
@@ -94,10 +96,12 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2 sm:text-sm text-xs font-extrabold">
-                    <div className="p-1 rounded-full bg-[#006837] relative">
-                        <GiShoppingCart className="text-2xl" />
-                        <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
-                    </div>
+                    <Link to='/dashboard/my-cart'>
+                        <div className="p-1 rounded-full bg-[#006837] relative">
+                            <GiShoppingCart className="text-2xl" />
+                            <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
+                        </div>
+                    </Link>
                     {
                         currentUser
                             ?
