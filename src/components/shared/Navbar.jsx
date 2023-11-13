@@ -6,10 +6,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import defaultUserImg from "../../assets/authentication/profile.png";
 import { Store } from "react-notifications-component";
+import useCart from "../../hooks/useCart";
 
 const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
     const { currentUser, logoutUser } = useContext(AuthContext);
+    const { cart } = useCart();
 
     const links = <>
         <NavLink to="/" onClick={() => setShowMenu(!showMenu)}>HOME</NavLink>
@@ -66,7 +68,7 @@ const Navbar = () => {
                         {links}
                         <div className="p-1 rounded-full bg-[#006837] relative">
                             <GiShoppingCart className="text-2xl" />
-                            <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">3</div>
+                            <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
                         </div>
                         {
                             currentUser
@@ -94,7 +96,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-2 sm:text-sm text-xs font-extrabold">
                     <div className="p-1 rounded-full bg-[#006837] relative">
                         <GiShoppingCart className="text-2xl" />
-                        <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">3</div>
+                        <div className="text-xs font-light px-[6px] py-px absolute bg-red-600 text-white rounded-full -bottom-2 -right-1">{cart?.length || 0}</div>
                     </div>
                     {
                         currentUser

@@ -2,16 +2,51 @@ import Proptypes from "prop-types";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Store } from "react-notifications-component";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 const FoodCard = ({ item }) => {
-    const { image, name, recipe, price } = item;
+    const { _id, image, name, recipe, price } = item;
     const { currentUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const axiosSecure = useAxiosSecure();
+    const { refetch } = useCart();
 
     const handleAddToCart = () => {
         if (currentUser) {
-            console.log(currentUser?.email)
+            const orderData = {
+                email: currentUser?.email,
+                foodId: _id,
+                image,
+                name,
+                price
+            }
+            axiosSecure.post('/orders', orderData)
+                .then(res => {
+                    console.log(res.data)
+                    if (res?.data?.insertedId) {
+                        Store.addNotification({
+                            title: "Successful",
+                            message: `${name} added to the cart`,
+                            type: "success",
+                            insert: "top",
+                            container: "top-center",
+                            animationIn: ["animate__animated", "animate__fadeIn"],
+                            animationOut: ["animate__animated", "animate__fadeOut"],
+                            dismiss: {
+                                duration: 2000,
+                                onScreen: true
+                            }
+                        });
+                        refetch();
+                    }
+                })
+                .catch(() => {
+
+                })
         }
         else {
             Swal.fire({
@@ -24,7 +59,7 @@ const FoodCard = ({ item }) => {
                 confirmButtonText: "Sign in"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    navigate('/login');
+                    navigate('/login', { state: pathname })
                 }
             });
         }
