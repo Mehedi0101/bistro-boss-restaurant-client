@@ -1,5 +1,5 @@
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import authBg from "../assets/authentication/authentication.png";
 import authImg from "../assets/authentication/authentication2.png";
 import FormField from "../components/authentication/FormField";
@@ -14,8 +14,9 @@ import { Store } from 'react-notifications-component';
 const Login = () => {
 
     const { loginUser } = useContext(AuthContext);
-
     const [captchaMatched, setCaptchaMatched] = useState(false);
+    const navigate = useNavigate();
+    const { state } = useLocation();
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -65,6 +66,7 @@ const Login = () => {
                         onScreen: true
                     }
                 });
+                navigate(state || "/")
             })
             .catch(() => {
                 Store.addNotification({
