@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authBg from "../assets/authentication/authentication.png";
 import authImg from "../assets/authentication/authentication2.png";
 import { BsFacebook } from "react-icons/bs";
@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import { Store } from "react-notifications-component";
 
 const Register = () => {
-    const { createUser } = useContext(AuthContext);
-
+    const { createUser, updateUser, logoutUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -24,19 +24,28 @@ const Register = () => {
 
         createUser(data.email, data.password)
             .then(() => {
-                Store.addNotification({
-                    title: "Successful",
-                    message: "You have successfully signed up",
-                    type: "success",
-                    insert: "top",
-                    container: "top-center",
-                    animationIn: ["animate__animated", "animate__fadeIn"],
-                    animationOut: ["animate__animated", "animate__fadeOut"],
-                    dismiss: {
-                        duration: 3000,
-                        onScreen: true
-                    }
-                });
+                updateUser(data.name, data.photo)
+                    .then(() => {
+                        Store.addNotification({
+                            title: "Successful",
+                            message: "You have successfully signed up",
+                            type: "success",
+                            insert: "top",
+                            container: "top-center",
+                            animationIn: ["animate__animated", "animate__fadeIn"],
+                            animationOut: ["animate__animated", "animate__fadeOut"],
+                            dismiss: {
+                                duration: 3000,
+                                onScreen: true
+                            }
+                        });
+                        logoutUser();
+                        navigate('/login');
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
             })
             .catch(() => {
                 Store.addNotification({
@@ -70,6 +79,13 @@ const Register = () => {
                             <input {...register("name", { required: true })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="text" name="name" id="name" placeholder="Type here" />
                             <br />
                             {errors.name && <span className="text-red-600 text-sm ml-2">* This field is required</span>}
+                        </div>
+
+                        <div className="mb-5">
+                            <label htmlFor="photo" className="text-[#444] font-semibold ml-1">Photo URL</label><br />
+                            <input {...register("photo", { required: true })} className="mt-3 w-full outline-none p-4 border border-[#D0D0D0] rounded-lg" type="text" name="photo" id="photo" placeholder="Enter your image link" />
+                            <br />
+                            {errors.photo && <span className="text-red-600 text-sm ml-2">* This field is required</span>}
                         </div>
 
                         <div className="mb-5">
