@@ -5,8 +5,10 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MyCart = () => {
-    const { cart, refetch } = useCart();
-    const price = cart.reduce((total, item) => total + item.price, 0);
+    const {cart, refetch} = useCart();
+    
+    const price = cart?.reduce((total, item) => total + item.price, 0);
+    console.log(price);
     const axiosSecure = useAxiosSecure();
 
     const handleRemove = id => {
@@ -20,7 +22,7 @@ const MyCart = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.delete(`http://localhost:5000/orders/${id}`)
+                axiosSecure.delete(`/orders/${id}`)
                     .then(res => {
                         if (res.data.deletedCount > 0) {
                             Swal.fire({
@@ -58,7 +60,7 @@ const MyCart = () => {
                     <tbody>
                         {/* row 1 */}
                         {
-                            cart.map((item, idx) => <tr key={item._id}>
+                            cart?.map((item, idx) => <tr key={item._id}>
                                 <td>
                                     {idx + 1}
                                 </td>

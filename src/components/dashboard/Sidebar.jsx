@@ -1,9 +1,12 @@
-import { FaBars, FaBookmark, FaCalendarAlt, FaHome, FaShoppingBag, FaShoppingCart, FaUsers } from "react-icons/fa";
+import { FaBars, FaBookmark, FaCalendarAlt, FaHome, FaShoppingBag, FaShoppingCart, FaUsers, FaList, FaBook } from "react-icons/fa";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { BiSolidContact } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
+import { ImSpoonKnife } from "react-icons/im";
 
 const Sidebar = () => {
+    const isAdmin = true;
+
     return (
         <div className="bg-[#D1A054] min-h-screen md:p-5 p-2 sm:w-fit w-1/4">
             <div className="cinzel xl:text-3xl sm:text-2xl text-lg font-black pt-6">
@@ -12,59 +15,112 @@ const Sidebar = () => {
             </div>
 
             <div className="mt-10 flex flex-col gap-4 lg:text-base md:text-base text-xs">
-                {/* user home */}
-                <NavLink to="/dashboard/"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaHome className="text-2xl hidden sm:block" />USER HOME
-                </NavLink>
+                {
+                    isAdmin
+                        ?
+                        <>
+                            {/* admin home */}
+                            <NavLink to="/dashboard/"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaHome className="text-2xl hidden sm:block" />ADMIN HOME
+                            </NavLink>
 
-                {/* reservation */}
-                <NavLink to="/dashboard/reservation"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaCalendarAlt className="text-2xl hidden sm:block" />RESERVATION
-                </NavLink>
+                            {/* add items */}
+                            <NavLink to="/dashboard/add-items"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <ImSpoonKnife className="text-2xl hidden sm:block" />ADD ITEMS
+                            </NavLink>
 
-                {/* payment history */}
-                <NavLink to="/dashboard/payment-history"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaMoneyCheckDollar className="text-2xl hidden sm:block" />PAYMENT HISTORY
-                </NavLink>
+                            {/* manage items */}
+                            <NavLink to="/dashboard/manage-items"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaList className="text-2xl hidden sm:block" />MANAGE ITEMS
+                            </NavLink>
 
-                {/* my cart */}
-                <NavLink to="/dashboard/my-cart"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaShoppingCart className="text-2xl hidden sm:block" />MY CART
-                </NavLink>
+                            {/* manage bookings */}
+                            <NavLink to="/dashboard/manage-bookings"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaBook className="text-2xl hidden sm:block" />MANAGE BOOKINGS
+                            </NavLink>
 
-                {/* add review */}
-                <NavLink to="/dashboard/add-review"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaUsers className="text-2xl hidden sm:block" />ADD REVIEW
-                </NavLink>
+                            {/* all users */}
+                            <NavLink to="/dashboard/all-users"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaUsers className="text-2xl hidden sm:block" />ALL USERS
+                            </NavLink>
+                        </>
+                        :
+                        <>
+                            {/* user home */}
+                            <NavLink to="/dashboard/"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaHome className="text-2xl hidden sm:block" />USER HOME
+                            </NavLink>
 
-                {/* my booking */}
-                <NavLink to="/dashboard/my-booking"
-                    className={({ isActive }) =>
-                        isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
-                    }
-                >
-                    <FaBookmark className="text-2xl hidden sm:block" />MY BOOKING
-                </NavLink>
+                            {/* reservation */}
+                            <NavLink to="/dashboard/reservation"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaCalendarAlt className="text-2xl hidden sm:block" />RESERVATION
+                            </NavLink>
+
+                            {/* payment history */}
+                            <NavLink to="/dashboard/payment-history"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaMoneyCheckDollar className="text-2xl hidden sm:block" />PAYMENT HISTORY
+                            </NavLink>
+
+                            {/* my cart */}
+                            <NavLink to="/dashboard/my-cart"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaShoppingCart className="text-2xl hidden sm:block" />MY CART
+                            </NavLink>
+
+                            {/* add review */}
+                            <NavLink to="/dashboard/add-review"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaUsers className="text-2xl hidden sm:block" />ADD REVIEW
+                            </NavLink>
+
+                            {/* my booking */}
+                            <NavLink to="/dashboard/my-booking"
+                                className={({ isActive }) =>
+                                    isActive ? "text-white flex items-center gap-3 font-bold" : "text-[#151515] flex items-center gap-3 font-medium"
+                                }
+                            >
+                                <FaBookmark className="text-2xl hidden sm:block" />MY BOOKING
+                            </NavLink>
+                        </>
+                }
             </div>
 
             <hr className="border-1 border-white my-5" />

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import authBg from "../assets/authentication/authentication.png";
 import authImg from "../assets/authentication/authentication2.png";
 import { BsFacebook } from "react-icons/bs";
@@ -8,10 +8,13 @@ import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import { Store } from "react-notifications-component";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const Register = () => {
-    const { createUser, updateUser, logoutUser } = useContext(AuthContext);
+    const { createUser, updateUser, logoutUser, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
+    const { state } = useLocation();
 
     const {
         register,
@@ -26,21 +29,31 @@ const Register = () => {
             .then(() => {
                 updateUser(data.name, data.photo)
                     .then(() => {
-                        Store.addNotification({
-                            title: "Successful",
-                            message: "You have successfully signed up",
-                            type: "success",
-                            insert: "top",
-                            container: "top-center",
-                            animationIn: ["animate__animated", "animate__fadeIn"],
-                            animationOut: ["animate__animated", "animate__fadeOut"],
-                            dismiss: {
-                                duration: 3000,
-                                onScreen: true
-                            }
-                        });
-                        logoutUser();
-                        navigate('/login');
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res?.data?.insertedId) {
+                                    Store.addNotification({
+                                        title: "Successful",
+                                        message: "You have successfully signed up",
+                                        type: "success",
+                                        insert: "top",
+                                        container: "top-center",
+                                        animationIn: ["animate__animated", "animate__fadeIn"],
+                                        animationOut: ["animate__animated", "animate__fadeOut"],
+                                        dismiss: {
+                                            duration: 3000,
+                                            onScreen: true
+                                        }
+                                    });
+                                    logoutUser();
+                                    navigate('/login');
+                                }
+                            })
                     })
                     .catch((err) => {
                         console.log(err);
@@ -62,6 +75,50 @@ const Register = () => {
                     }
                 });
             })
+    }
+
+    const continueWithGoogle = () => {
+        googleLogin()
+            .then(res => {
+                const userInfo = {
+                    name: res?.user?.displayName,
+                    email: res?.user?.email
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        if (res?.data?.insertedId) {
+                            Store.addNotification({
+                                title: "Successful",
+                                message: "You have successfully signed in",
+                                type: "success",
+                                insert: "top",
+                                container: "top-center",
+                                animationIn: ["animate__animated", "animate__fadeIn"],
+                                animationOut: ["animate__animated", "animate__fadeOut"],
+                                dismiss: {
+                                    duration: 3000,
+                                    onScreen: true
+                                }
+                            });
+                            navigate(state || "/")
+                        }
+                    })
+                    .catch(() => {
+                        Store.addNotification({
+                            title: "Failed",
+                            message: "Sign in failed",
+                            type: "danger",
+                            insert: "top",
+                            container: "top-center",
+                            animationIn: ["animate__animated", "animate__fadeIn"],
+                            animationOut: ["animate__animated", "animate__fadeOut"],
+                            dismiss: {
+                                duration: 3000,
+                                onScreen: true
+                            }
+                        });
+                    })
+            });
     }
 
     return (
@@ -120,7 +177,7 @@ const Register = () => {
                         <h3 className="font-medium text-center mb-3">Or sign in with</h3>
                         <div className="flex justify-center gap-5 items-center">
                             <BsFacebook className="text-4xl" />
-                            <AiFillGoogleCircle className="text-[41px]" />
+                            <AiFillGoogleCircle onClick={continueWithGoogle} className="text-[41px] cursor-pointer" />
                             <BsGithub className="text-4xl" />
                         </div>
                     </div>

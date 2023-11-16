@@ -10,13 +10,15 @@ import { MdOutlineDangerous } from "react-icons/md";
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import { Store } from 'react-notifications-component';
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Login = () => {
 
-    const { loginUser } = useContext(AuthContext);
+    const { loginUser, googleLogin } = useContext(AuthContext);
     const [captchaMatched, setCaptchaMatched] = useState(false);
     const navigate = useNavigate();
     const { state } = useLocation();
+    const axiosPublic = useAxiosPublic();
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -87,6 +89,51 @@ const Login = () => {
     }
 
 
+    const continueWithGoogle = () => {
+        googleLogin()
+            .then(res => {
+                const userInfo = {
+                    name: res?.user?.displayName,
+                    email: res?.user?.email
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        if (res?.data?.insertedId) {
+                            Store.addNotification({
+                                title: "Successful",
+                                message: "You have successfully signed in",
+                                type: "success",
+                                insert: "top",
+                                container: "top-center",
+                                animationIn: ["animate__animated", "animate__fadeIn"],
+                                animationOut: ["animate__animated", "animate__fadeOut"],
+                                dismiss: {
+                                    duration: 3000,
+                                    onScreen: true
+                                }
+                            });
+                            navigate(state || "/")
+                        }
+                    })
+                    .catch(() => {
+                        Store.addNotification({
+                            title: "Failed",
+                            message: "Sign in failed",
+                            type: "danger",
+                            insert: "top",
+                            container: "top-center",
+                            animationIn: ["animate__animated", "animate__fadeIn"],
+                            animationOut: ["animate__animated", "animate__fadeOut"],
+                            dismiss: {
+                                duration: 3000,
+                                onScreen: true
+                            }
+                        });
+                    })
+            });
+    }
+
+
 
     return (
         <div className="min-h-screen lg:p-20" style={{ backgroundImage: `url(${authBg})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
@@ -115,7 +162,7 @@ const Login = () => {
                         <h3 className="font-medium text-center mb-3">Or sign in with</h3>
                         <div className="flex justify-center gap-5 items-center">
                             <BsFacebook className="text-4xl" />
-                            <AiFillGoogleCircle className="text-[41px]" />
+                            <AiFillGoogleCircle onClick={continueWithGoogle} className="text-[41px] cursor-pointer" />
                             <BsGithub className="text-4xl" />
                         </div>
                     </div>
