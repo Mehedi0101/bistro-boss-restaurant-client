@@ -3,9 +3,10 @@ import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { BiSolidContact } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
 import { ImSpoonKnife } from "react-icons/im";
+import useAdmin from "../../hooks/useAdmin";
 
 const Sidebar = () => {
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
 
     return (
         <div className="bg-[#D1A054] min-h-screen md:p-5 p-2 sm:w-fit w-1/4">

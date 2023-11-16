@@ -8,7 +8,6 @@ const MyCart = () => {
     const {cart, refetch} = useCart();
     
     const price = cart?.reduce((total, item) => total + item.price, 0);
-    console.log(price);
     const axiosSecure = useAxiosSecure();
 
     const handleRemove = id => {
