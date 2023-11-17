@@ -4,13 +4,15 @@ import HeadingSection from "../../components/shared/HeadingSection";
 import useFetchData from "../../hooks/useFetchData";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router-dom";
 
 const ManageItems = () => {
     const { data: menu, refetch } = useFetchData();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
-    const handleUpdate = () => {
-
+    const handleUpdate = id => {
+        navigate(`/dashboard/update-item/${id}`)
     }
 
     const handleRemove = id => {
