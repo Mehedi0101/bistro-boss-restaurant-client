@@ -7,7 +7,7 @@ const useCart = () => {
     const axiosSecure = useAxiosSecure();
     const { currentUser } = useContext(AuthContext);
 
-    const { data: cart = {}, refetch } = useQuery({
+    const { data: cart = [], refetch } = useQuery({
         queryKey: ["cart", currentUser?.email],
         queryFn: async () => {
             if (currentUser?.email) {
